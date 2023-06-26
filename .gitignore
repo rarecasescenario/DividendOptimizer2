@@ -1,5 +1,17 @@
-# Ignore Gradle project-specific cache directory
 .gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Ignore Gradle build output directory
-build
+.gradle
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
