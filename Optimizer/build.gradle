@@ -26,6 +26,30 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+jar {
+	archiveFileName = "divoptimizer2.jar"
+	destinationDirectory = file("${project.rootDir}/Optimizer/build/libs")
+	manifest {
+		attributes(
+			'Build-By'			: System.properties['user.name'],
+			'Build-Timestamp'	: new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()),
+			'Created-By'		: "Gradle ${gradle.gradleVersion}",
+			'Build-Jdk'			: "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+			'Build-OS'			: "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}",
+			'Main-Class'        : "com.stock.DivindendOptimizer2Application",
+			'Implementation-Vendor' : "RareCase Corp",
+			'Implementation-Title' : "Dividend Optimizer 2",
+			'Version' : "${archiveVersion}",
+			'Specification-Title' : "${archiveFileName}",
+			//'Class-Path': configurations.runtimeClasspath.files.collect {it.getName()}.join(' ')
+		)
+	}
+	from('resources') {
+		include 'log4j2.xml'
+	}
+	//duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	//duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
