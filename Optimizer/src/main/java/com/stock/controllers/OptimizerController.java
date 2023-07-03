@@ -15,6 +15,7 @@ import com.stock.data.OutputDesicionData;
 import com.stock.model.Position;
 import com.stock.repositories.PositionRepository;
 import com.stock.services.CalculationService;
+import com.stock.yahoo.SymbolCurrentState;
 
 @RestController
 @RequestMapping("/api")
@@ -31,14 +32,19 @@ public class OptimizerController {
   private static Logger logger = LogManager.getLogger(OptimizerController.class);
 
 
+  @GetMapping("/symbol-current-state")
+  public @ResponseBody List<SymbolCurrentState> getYahooState() {
+    return calculationService.getSymbolCurrentState();
+  }
+
   @GetMapping("/watch-symbols")
   public @ResponseBody List<String> getWatchSymbols() {
     return calculationService.getWatchSymbols();
   }
 
 
-  @GetMapping("/watch-list")
-  public @ResponseBody Iterable<Position> getPositionByUser(String user) {
+  @GetMapping("/positions")
+  public @ResponseBody Iterable<Position> getPositionByUser() {
     Iterable<Position> p = positionRepository.findAll();
     List<Position> result = Streamable.of(p).toList();
     OptimizerController.logger.info("All current postions");

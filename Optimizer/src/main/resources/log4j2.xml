@@ -24,12 +24,12 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Logger name="com.stock" additivity="false" level="info">
-			<AppenderRef ref="DAILY_LOG" level="error" />
+		<Logger name="com.stock.services" additivity="true" level="info">
+			<AppenderRef ref="DAILY_LOG" level="info" />
 			<AppenderRef ref="Console" level="info" />
 		</Logger>
 		<Root level="info" additivity="false">
-			<AppenderRef ref="DAILY_LOG" level="error" />
+			<AppenderRef ref="DAILY_LOG" level="info" />
 			<AppenderRef ref="Console" level="info" />
 		</Root>
 	</Loggers>

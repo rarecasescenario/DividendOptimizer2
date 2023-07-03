@@ -2,6 +2,7 @@ package com.stock.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +28,7 @@ public class CalculationServiceImpl implements CalculationService {
   WatchSymbolRepository watchSymbolRepository;
 
   private List<WatchSymbol> watchSymbols;
-  private List<CurrentPosition> currentPositions;
+
   // built localy
   private List<String> symbolWorkList;
   // current yahoo data
@@ -38,12 +39,10 @@ public class CalculationServiceImpl implements CalculationService {
     super();
   }
 
-  public CalculationServiceImpl(List<WatchSymbol> watchSymbols,
-      List<CurrentPosition> currentPositions, List<String> symbolWorkList,
+  public CalculationServiceImpl(List<WatchSymbol> watchSymbols, List<String> symbolWorkList,
       List<SymbolCurrentState> symbolCurrentState, List<OutputDesicionData> desicionData) {
     super();
     this.watchSymbols = watchSymbols;
-    this.currentPositions = currentPositions;
     this.symbolWorkList = symbolWorkList;
     this.symbolCurrentState = symbolCurrentState;
     this.desicionData = desicionData;
@@ -72,7 +71,6 @@ public class CalculationServiceImpl implements CalculationService {
    */
   @Override
   public List<String> getWorkList() {
-    System.out.println();
     if (watchSymbols != null && !watchSymbols.isEmpty()) {
       return watchSymbols.stream().map(t -> t.getSymbol()).collect(Collectors.toList());
     }
@@ -96,15 +94,6 @@ public class CalculationServiceImpl implements CalculationService {
     this.watchSymbols = watchSymbols;
   }
 
-  @Override
-  public List<CurrentPosition> getCurrentPositions() {
-    return currentPositions;
-  }
-
-  @Override
-  public void setCurrentPositions(List<CurrentPosition> currentPositions) {
-    this.currentPositions = currentPositions;
-  }
 
   @Override
   public List<String> getSymbolWorkList() {
@@ -115,8 +104,24 @@ public class CalculationServiceImpl implements CalculationService {
   // this.symbolWorkList = symbolWorkList;
   // }
 
+  /**
+   * Getting Yahoo current state of the list of symbol.
+   *
+   */
   @Override
   public List<SymbolCurrentState> getSymbolCurrentState() {
+
+    // 1. Get work list of symbols
+    List<String> symbols = getWatchSymbols();
+    List<SymbolCurrentState> symbolCurrentState = null;
+    try {
+      symbolCurrentState = currentYahooData.getData(symbols);
+      CalculationServiceImpl.log.info(symbolCurrentState.toString());
+    } catch (InterruptedException | ExecutionException e) {
+      CalculationServiceImpl.log
+          .error("Cannot get a watch symbols from the database: " + e.getMessage());
+      e.printStackTrace();
+    }
     return symbolCurrentState;
   }
 
@@ -133,5 +138,17 @@ public class CalculationServiceImpl implements CalculationService {
   @Override
   public void setDesicionData(List<OutputDesicionData> desicionData) {
     this.desicionData = desicionData;
+  }
+
+  @Override
+  public List<CurrentPosition> getCurrentPositions() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setCurrentPositions(List<CurrentPosition> currentPositions) {
+    // TODO Auto-generated method stub
+
   }
 }
