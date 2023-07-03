@@ -57,3 +57,6 @@ VALUES ('SHOP.TO', '0.0', '0.0', '0.0', '2023-07-02');
 
 INSERT INTO `horse`.`watch_symbol` (`symbol`, `quoterly_dividend_amount`, `upper_yield`, `lower_yield`, `updated_on`) 
 VALUES ('CCA.TO', '0.776', '5.09', '5.09', '2023-07-02');
+
+INSERT INTO `horse`.`watch_symbol` (`symbol`, `quoterly_dividend_amount`, `upper_yield`, `lower_yield`, `updated_on`) 
+VALUES ('BAC', '0.22', '3.17', '1.71', '2023-07-02');

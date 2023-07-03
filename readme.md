@@ -18,4 +18,7 @@ http://localhost:8586/api/positions
 
 TODO:
 1. Add different atrtributes: Invested amount, Available Cash
-2. Things about Admin override events (holidays, Fed and Bank of Canada Meetings)
+2. Design decision page
+3. Build Decision Service for Decision page
+4. Things about Admin override events (holidays, Fed and Bank of Canada Meetings)
+5.
