@@ -1,5 +1,9 @@
 package com.stock.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -9,9 +13,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
-import com.stock.data.CurrentPosition;
 import com.stock.data.OutputDesicionData;
+import com.stock.data.UserPosition;
+import com.stock.model.Position;
 import com.stock.model.WatchSymbol;
+import com.stock.repositories.PositionRepository;
 import com.stock.repositories.WatchSymbolRepository;
 import com.stock.yahoo.CurrentYahooData;
 import com.stock.yahoo.SymbolCurrentState;
@@ -26,6 +32,9 @@ public class CalculationServiceImpl implements CalculationService {
 
   @Autowired
   WatchSymbolRepository watchSymbolRepository;
+
+  @Autowired
+  private PositionRepository positionRepository;
 
   private List<WatchSymbol> watchSymbols;
 
@@ -90,12 +99,6 @@ public class CalculationServiceImpl implements CalculationService {
   }
 
   @Override
-  public void setWatchSymbols(List<WatchSymbol> watchSymbols) {
-    this.watchSymbols = watchSymbols;
-  }
-
-
-  @Override
   public List<String> getSymbolWorkList() {
     return symbolWorkList;
   }
@@ -126,29 +129,37 @@ public class CalculationServiceImpl implements CalculationService {
   }
 
   @Override
-  public void setSymbolCurrentState(List<SymbolCurrentState> symbolCurrentState) {
-    this.symbolCurrentState = symbolCurrentState;
-  }
-
-  @Override
   public List<OutputDesicionData> getDesicionData() {
     return desicionData;
   }
 
-  @Override
-  public void setDesicionData(List<OutputDesicionData> desicionData) {
-    this.desicionData = desicionData;
-  }
 
   @Override
-  public List<CurrentPosition> getCurrentPositions() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public List<UserPosition> getUserPositions() {
+    Iterable<Position> p = positionRepository.findAll();
+    List<Position> srcData = Streamable.of(p).toList();
+    List<UserPosition> avgData = new ArrayList<>();
 
-  @Override
-  public void setCurrentPositions(List<CurrentPosition> currentPositions) {
-    // TODO Auto-generated method stub
+    HashSet<String> workList =
+        srcData.stream().map(t -> t.getSymbol()).collect(Collectors.toCollection(HashSet::new));
+    for (String s : workList) {
+      CalculationServiceImpl.log.info("Processing symbol: " + s);
+      BigDecimal totalSum = srcData.stream().filter(x -> x.getSymbol().equalsIgnoreCase(s))
+          .map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getShares())).add(t.getCommission()))
+          .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+      int totalShares = srcData.stream().filter(x -> x.getSymbol().equalsIgnoreCase(s))
+          .mapToInt(x -> x.getShares()).sum();
+
+      BigDecimal avgPrice =
+          totalSum.divide(BigDecimal.valueOf(totalShares), RoundingMode.HALF_EVEN);
+
+      avgData.add(new UserPosition(s, totalShares, avgPrice));
+
+      System.out.println(
+          s + " = " + totalSum + " shares: " + totalShares + " Averagge Price: " + avgPrice);
+
+    }
+    return avgData;
   }
 }

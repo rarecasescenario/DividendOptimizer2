@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.stock.data.OutputDesicionData;
+import com.stock.data.UserPosition;
 import com.stock.model.Position;
 import com.stock.repositories.PositionRepository;
 import com.stock.services.CalculationService;
@@ -51,20 +52,17 @@ public class OptimizerController {
     return result;
   }
 
-  @GetMapping("/full-data")
+  @GetMapping("/decision-data")
   public @ResponseBody Iterable<OutputDesicionData> getFullData() {
     Iterable<OutputDesicionData> result = null;
     // Call Processing Service here
-
     return result;
   }
 
 
-  @GetMapping("/all-current-positions")
-  public @ResponseBody Iterable<Position> getAllCurrentPositions() {
-    Iterable<Position> positions = positionRepository.findAll();
-    OptimizerController.logger.info("All current postions");
-    return positions;
+  @GetMapping("/user-current-positions")
+  public @ResponseBody List<UserPosition> getPositions() {
+    return calculationService.getUserPositions();
   }
 
   @GetMapping("/greeting")

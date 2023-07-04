@@ -1,5 +1,10 @@
 # Dividend Optimizer on SpringBoot platform
 
+
+##Project setup
+Gradle version: 8.1.1
+Java Version: jdk-17.0.2
+
 http://localhost:8586/api/all-current-positions
 
 
@@ -13,6 +18,8 @@ http://localhost:8586/api/symbol-current-state
 Current positions (shares)
 http://localhost:8586/api/positions
 
+User Current positions with average price
+http://localhost:8586/api/user-current-positions
 
 
 
