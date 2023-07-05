@@ -8,3 +8,14 @@ CREATE TABLE `watch_symbol` (
   UNIQUE KEY `symbol_UNIQUE` (`symbol`),
   UNIQUE KEY `UK1eg9q32y95hn0r7gx0bemfd6k` (`symbol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='A list of symbol with divident payments';
+
+
+CREATE TABLE `horse`.`user_data` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'Record Id',
+  `user_id` INT NOT NULL,
+  `invested_amount` DECIMAL(12,2) NULL,
+  `available_cash` DECIMAL(12,2) NULL,
+  `updated_on` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+COMMENT = 'User current data';

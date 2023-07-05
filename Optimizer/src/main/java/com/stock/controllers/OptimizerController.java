@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stock.data.OutputDesicionData;
 import com.stock.data.UserPosition;
 import com.stock.model.Position;
+import com.stock.model.UserData;
 import com.stock.repositories.PositionRepository;
 import com.stock.services.CalculationService;
 import com.stock.yahoo.SymbolCurrentState;
@@ -50,6 +51,11 @@ public class OptimizerController {
     List<Position> result = Streamable.of(p).toList();
     OptimizerController.logger.info("All current postions");
     return result;
+  }
+
+  @GetMapping("/user-data")
+  public @ResponseBody List<UserData> getUserData() {
+    return calculationService.getUserData();
   }
 
   @GetMapping("/decision-data")

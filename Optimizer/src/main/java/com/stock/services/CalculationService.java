@@ -3,6 +3,7 @@ package com.stock.services;
 import java.util.List;
 import com.stock.data.OutputDesicionData;
 import com.stock.data.UserPosition;
+import com.stock.model.UserData;
 import com.stock.yahoo.SymbolCurrentState;
 
 public interface CalculationService {
@@ -19,6 +20,9 @@ public interface CalculationService {
 
   List<SymbolCurrentState> getSymbolCurrentState();
 
+  List<UserData> getUserData();
+
   List<OutputDesicionData> getDesicionData();
+
 
 }

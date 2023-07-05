@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 import com.stock.data.OutputDesicionData;
 import com.stock.data.UserPosition;
 import com.stock.model.Position;
+import com.stock.model.UserData;
 import com.stock.model.WatchSymbol;
 import com.stock.repositories.PositionRepository;
+import com.stock.repositories.UserDataRepository;
 import com.stock.repositories.WatchSymbolRepository;
 import com.stock.yahoo.CurrentYahooData;
 import com.stock.yahoo.SymbolCurrentState;
@@ -29,12 +31,12 @@ public class CalculationServiceImpl implements CalculationService {
 
   @Autowired
   CurrentYahooData currentYahooData;
-
   @Autowired
   WatchSymbolRepository watchSymbolRepository;
-
   @Autowired
   private PositionRepository positionRepository;
+  @Autowired
+  UserDataRepository userDataRepository;
 
   private List<WatchSymbol> watchSymbols;
 
@@ -161,5 +163,11 @@ public class CalculationServiceImpl implements CalculationService {
 
     }
     return avgData;
+  }
+
+  @Override
+  public List<UserData> getUserData() {
+    Iterable<UserData> p = userDataRepository.findAll();
+    return Streamable.of(p).toList();
   }
 }
