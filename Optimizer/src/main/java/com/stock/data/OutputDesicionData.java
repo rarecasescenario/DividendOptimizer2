@@ -5,140 +5,131 @@ import java.math.BigDecimal;
 
 public class OutputDesicionData implements Serializable {
 
-    public String symbol;
-    public int shares;
-    public BigDecimal price;
-    public BigDecimal symbolAveragePrice;
-    public BigDecimal symbolPosition;
-    public BigDecimal quaterlyShareDividendAmount;
-    public BigDecimal positionDividendAmount;
-    public BigDecimal upperYield;
-    public BigDecimal quoterYield;
-    public BigDecimal midleYield;
-    public BigDecimal lowerYield;
-    public BigDecimal currentYield;
-    public BigDecimal yieldDifference;
-    public String action;
+  public String symbol;
+  public int shares;
+  public BigDecimal price;
+  public BigDecimal symbolAveragePrice;
+  public BigDecimal symbolPosition;
+  public BigDecimal quaterlyShareDividendAmount;
+  public BigDecimal positionDividendAmount;
+  public BigDecimal upperYield;
+  public BigDecimal midleYield;
+  public BigDecimal lowerYield;
+  public BigDecimal currentYield;
+  public BigDecimal yieldDifference;
+  public String action;
 
-    public String getSymbol() {
-	return symbol;
-    }
+  public String getSymbol() {
+    return symbol;
+  }
 
-    public void setSymbol(String symbol) {
-	this.symbol = symbol;
-    }
+  public void setSymbol(String symbol) {
+    this.symbol = symbol;
+  }
 
-    public int getShares() {
-	return shares;
-    }
+  public int getShares() {
+    return shares;
+  }
 
-    public void setShares(int shares) {
-	this.shares = shares;
-    }
+  public void setShares(int shares) {
+    this.shares = shares;
+  }
 
-    public BigDecimal getPrice() {
-	return price;
-    }
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-    public void setPrice(BigDecimal price) {
-	this.price = price;
-    }
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
 
-    public BigDecimal getSymbolAveragePrice() {
-	return symbolAveragePrice;
-    }
+  public BigDecimal getSymbolAveragePrice() {
+    return symbolAveragePrice;
+  }
 
-    public void setSymbolAveragePrice(BigDecimal symbolAveragePrice) {
-	this.symbolAveragePrice = symbolAveragePrice;
-    }
+  public void setSymbolAveragePrice(BigDecimal symbolAveragePrice) {
+    this.symbolAveragePrice = symbolAveragePrice;
+  }
 
-    public BigDecimal getSymbolPosition() {
-	return symbolPosition;
-    }
+  public BigDecimal getSymbolPosition() {
+    return symbolPosition;
+  }
 
-    public void setSymbolPosition(BigDecimal symbolPosition) {
-	this.symbolPosition = symbolPosition;
-    }
+  public void setSymbolPosition(BigDecimal symbolPosition) {
+    this.symbolPosition = symbolPosition;
+  }
 
-    public BigDecimal getQuaterlyShareDividendAmount() {
-	return quaterlyShareDividendAmount;
-    }
+  public BigDecimal getQuaterlyShareDividendAmount() {
+    return quaterlyShareDividendAmount;
+  }
 
-    public void setQuaterlyShareDividendAmount(BigDecimal quaterlyShareDividendAmount) {
-	this.quaterlyShareDividendAmount = quaterlyShareDividendAmount;
-    }
+  public void setQuaterlyShareDividendAmount(BigDecimal quaterlyShareDividendAmount) {
+    this.quaterlyShareDividendAmount = quaterlyShareDividendAmount;
+  }
 
-    public BigDecimal getPositionDividendAmount() {
-	return positionDividendAmount;
-    }
+  public BigDecimal getPositionDividendAmount() {
+    return positionDividendAmount;
+  }
 
-    public void setPositionDividendAmount(BigDecimal positionDividendAmount) {
-	this.positionDividendAmount = positionDividendAmount;
-    }
+  public void setPositionDividendAmount(BigDecimal positionDividendAmount) {
+    this.positionDividendAmount = positionDividendAmount;
+  }
 
-    public BigDecimal getUpperYield() {
-	return upperYield;
-    }
+  public BigDecimal getUpperYield() {
+    return upperYield;
+  }
 
-    public void setUpperYield(BigDecimal upperYield) {
-	this.upperYield = upperYield;
-    }
+  public void setUpperYield(BigDecimal upperYield) {
+    this.upperYield = upperYield;
+  }
 
-    public BigDecimal getQuoterYield() {
-	return quoterYield;
-    }
+  public BigDecimal getMidleYield() {
+    return midleYield;
+  }
 
-    public void setQuoterYield(BigDecimal quoterYield) {
-	this.quoterYield = quoterYield;
-    }
+  public void setMidleYield(BigDecimal midleYield) {
+    this.midleYield = midleYield;
+  }
 
-    public BigDecimal getMidleYield() {
-	return midleYield;
-    }
+  public BigDecimal getLowerYield() {
+    return lowerYield;
+  }
 
-    public void setMidleYield(BigDecimal midleYield) {
-	this.midleYield = midleYield;
-    }
+  public void setLowerYield(BigDecimal lowerYield) {
+    this.lowerYield = lowerYield;
+  }
 
-    public BigDecimal getLowerYield() {
-	return lowerYield;
-    }
+  public BigDecimal getCurrentYield() {
+    return currentYield;
+  }
 
-    public void setLowerYield(BigDecimal lowerYield) {
-	this.lowerYield = lowerYield;
-    }
+  public void setCurrentYield(BigDecimal currentYield) {
+    this.currentYield = currentYield;
+  }
 
-    public BigDecimal getCurrentYield() {
-	return currentYield;
-    }
+  public BigDecimal getYieldDifference() {
+    return yieldDifference;
+  }
 
-    public void setCurrentYield(BigDecimal currentYield) {
-	this.currentYield = currentYield;
-    }
+  public void setYieldDifference(BigDecimal yieldDifference) {
+    this.yieldDifference = yieldDifference;
+  }
 
-    public BigDecimal getYieldDifference() {
-	return yieldDifference;
-    }
+  public String getAction() {
+    return action;
+  }
 
-    public void setYieldDifference(BigDecimal yieldDifference) {
-	this.yieldDifference = yieldDifference;
-    }
+  public void setAction(String action) {
+    this.action = action;
+  }
 
-    public String getAction() {
-	return action;
-    }
-
-    public void setAction(String action) {
-	this.action = action;
-    }
-
-    @Override
-    public String toString() {
-	return "OutputDesicionData [symbol=" + symbol + ", shares=" + shares + ", price=" + price
-		+ ", symbolAveragePrice=" + symbolAveragePrice + ", symbolPosition=" + symbolPosition
-		+ ", quaterlyShareDividendAmount=" + quaterlyShareDividendAmount + ", positionDividendAmount="
-		+ positionDividendAmount + ", upperYield=" + upperYield + ", quoterYield=" + quoterYield
-		+ ", midleYield=" + midleYield + ", lowerYield=" + lowerYield + ", currentYield=" + currentYield
-		+ ", yieldDifference=" + yieldDifference + ", action=" + action + "]";
-    }
+  @Override
+  public String toString() {
+    return "OutputDesicionData [symbol=" + symbol + ", shares=" + shares + ", price=" + price
+        + ", symbolAveragePrice=" + symbolAveragePrice + ", symbolPosition=" + symbolPosition
+        + ", quaterlyShareDividendAmount=" + quaterlyShareDividendAmount
+        + ", positionDividendAmount=" + positionDividendAmount + ", upperYield=" + upperYield
+        + ", midleYield=" + midleYield + ", lowerYield=" + lowerYield + ", currentYield="
+        + currentYield + ", yieldDifference=" + yieldDifference + ", action=" + action + "]";
+  }
 }

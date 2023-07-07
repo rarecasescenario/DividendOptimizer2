@@ -5,7 +5,8 @@
 Gradle version: 8.1.1
 Java Version: jdk-17.0.2
 
-http://localhost:8586/api/all-current-positions
+Decision data
+http://localhost:8586/api/decision-data
 
 User Data
 http://localhost:8586/api/user-data

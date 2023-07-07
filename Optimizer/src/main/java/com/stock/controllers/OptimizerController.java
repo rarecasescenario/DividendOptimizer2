@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Streamable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.stock.data.OutputDesicionData;
 import com.stock.data.UserPosition;
-import com.stock.model.Position;
 import com.stock.model.UserData;
-import com.stock.repositories.PositionRepository;
 import com.stock.services.CalculationService;
 import com.stock.yahoo.SymbolCurrentState;
 
@@ -26,8 +23,6 @@ public class OptimizerController {
   private static final String template = "Hello, %s!";
   private final AtomicLong counter = new AtomicLong();
 
-  @Autowired
-  private PositionRepository positionRepository;
   @Autowired
   CalculationService calculationService;
 
@@ -44,29 +39,22 @@ public class OptimizerController {
     return calculationService.getWatchSymbols();
   }
 
-
-  @GetMapping("/positions")
-  public @ResponseBody Iterable<Position> getPositionByUser() {
-    Iterable<Position> p = positionRepository.findAll();
-    List<Position> result = Streamable.of(p).toList();
-    OptimizerController.logger.info("All current postions");
-    return result;
-  }
-
   @GetMapping("/user-data")
   public @ResponseBody List<UserData> getUserData() {
     return calculationService.getUserData();
   }
 
-  @GetMapping("/decision-data")
-  public @ResponseBody Iterable<OutputDesicionData> getFullData() {
-    Iterable<OutputDesicionData> result = null;
-    // Call Processing Service here
-    return result;
+  @GetMapping("/decision-data2")
+  public @ResponseBody List<OutputDesicionData> getDesicionData2() {
+    return calculationService.processData();
   }
 
+  @GetMapping("/decision-data")
+  public @ResponseBody List<OutputDesicionData> getDesicionData() {
+    return calculationService.processData();
+  }
 
-  @GetMapping("/user-current-positions")
+  @GetMapping("/user-positions")
   public @ResponseBody List<UserPosition> getPositions() {
     return calculationService.getUserPositions();
   }

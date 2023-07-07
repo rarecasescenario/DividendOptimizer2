@@ -16,13 +16,8 @@ public interface CalculationService {
 
   List<UserPosition> getUserPositions();
 
-  List<String> getSymbolWorkList();
-
   List<SymbolCurrentState> getSymbolCurrentState();
 
   List<UserData> getUserData();
-
-  List<OutputDesicionData> getDesicionData();
-
 
 }
