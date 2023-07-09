@@ -26,8 +26,8 @@ http://localhost:8586/api/user-current-positions
 
 
 TODO:
-1. Add different atrtributes: Invested amount, Available Cash
+1. Add different attributes: Invested amount, Available Cash
 2. Design decision page
 3. Build Decision Service for Decision page
 4. Things about Admin override events (holidays, Fed and Bank of Canada Meetings)
-5.
+5. Fix the error when no positions
