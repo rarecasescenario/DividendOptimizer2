@@ -1,9 +1,9 @@
 package com.stock.services;
 
 import java.util.List;
-import com.stock.data.CurrentPosition;
 import com.stock.data.OutputDesicionData;
-import com.stock.model.WatchSymbol;
+import com.stock.data.UserPosition;
+import com.stock.model.UserData;
 import com.stock.yahoo.SymbolCurrentState;
 
 public interface CalculationService {
@@ -14,19 +14,10 @@ public interface CalculationService {
 
   List<String> getWatchSymbols();
 
-  void setWatchSymbols(List<WatchSymbol> watchSymbols);
-
-  List<CurrentPosition> getCurrentPositions();
-
-  void setCurrentPositions(List<CurrentPosition> currentPositions);
-
-  List<String> getSymbolWorkList();
+  List<UserPosition> getUserPositions();
 
   List<SymbolCurrentState> getSymbolCurrentState();
 
-  void setSymbolCurrentState(List<SymbolCurrentState> symbolCurrentState);
+  List<UserData> getUserData();
 
-  List<OutputDesicionData> getDesicionData();
-
-  void setDesicionData(List<OutputDesicionData> desicionData);
 }

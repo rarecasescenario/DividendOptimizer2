@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import com.stock.data.CurrentPosition;
+import com.stock.data.UserPosition;
 import com.stock.model.WatchSymbol;
 
 public class Utility {
@@ -85,18 +85,18 @@ public class Utility {
    *
    * @return
    */
-  public static List<CurrentPosition> getCurrentPositions() {
-    List<CurrentPosition> r = new ArrayList<>();
-    r.add(new CurrentPosition("CM.TO", 300));
+  public static List<UserPosition> getCurrentPositions() {
+    List<UserPosition> r = new ArrayList<>();
+    // r.add(new UserPosition("CM.TO", 300));
     // r.add(new CurrentPosition("BMO.TO", 200));
-    r.add(new CurrentPosition("BNS.TO", 730));
+    // r.add(new UserPosition("BNS.TO", 730));
     // r.add(new CurrentPosition("TD.TO", 250));
-    r.add(new CurrentPosition("SU.TO", 300));
-    r.add(new CurrentPosition("ENB.TO", 600));
+    // r.add(new UserPosition("SU.TO", 300));
+    // r.add(new UserPosition("ENB.TO", 600));
     // r.add(new CurrentPosition("SHOP.TO", 172));
     // r.add(new CurrentPosition("IAG.TO", 160));
     // r.add(new CurrentPosition("RY.TO", 250));
-    r.add(new CurrentPosition("BCE.TO", 600));
+    // r.add(new UserPosition("BCE.TO", 600));
     return r;
   }
 
