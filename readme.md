@@ -1,6 +1,11 @@
 # Dividend Optimizer on SpringBoot platform
 
 
+##App start
+```
+C:\Tools\jdk-17.0.2\bin\java.exe -jar C:\AV\WorkProjects\DividendOptimizer2\Optimizer\build\libs\Optimizer-0.0.1-SNAPSHOT.jar
+```
+
 ##Project setup
 Gradle version: 8.1.1
 Java Version: jdk-17.0.2
