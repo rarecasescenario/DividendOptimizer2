@@ -12,26 +12,9 @@ java {
 	sourceCompatibility = '17'
 }
 
-//repositories {
-//	mavenCentral()
-//}
-
 configurations.all {
     exclude group: 'ch.qos.logback', module: 'logback-classic'
 }
-
-//configurations { 
-//	compile.exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging' 
-//}
-
-
-//configurations {
-//    compile.exclude module: 'spring-boot-starter-logging'
-//}
-
-//configurations { 
-//	compile.exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging' 
-//}
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-log4j2"
@@ -40,30 +23,19 @@ dependencies {
             replacedBy("org.springframework.boot:spring-boot-starter-log4j2", "Use Log4j2 instead of Logback")
         }
     }
-    
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 //	implementation 'org.springframework.boot:spring-boot-starter-web' {
-	
+	implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.32'
 	implementation('org.springframework.boot:spring-boot-starter-web') {
        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'  
     }
     implementation('org.springframework.boot:spring-boot-starter-log4j2')
-    
-//	compile("org.springframework.boot:spring-boot-starter-log4j2")
-	
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging'
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2'
-//	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
-//	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
-//	implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.17.1'
-//	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-//	runtimeOnly 'com.mysql:mysql-connector-j'
-	implementation 'com.mysql:mysql-connector-j'
-//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.4.0'
 }
+
+
 jar {
 	archiveFileName = "divoptimizer2.jar"
 	destinationDirectory = file("${project.rootDir}/Optimizer/build/libs")
@@ -79,14 +51,16 @@ jar {
 			'Implementation-Title' : "Dividend Optimizer 2",
 			'Version' : "${archiveVersion}",
 			'Specification-Title' : "${archiveFileName}",
-			//'Class-Path': configurations.runtimeClasspath.files.collect {it.getName()}.join(' ')
+			'Class-Path': configurations.runtimeClasspath.files.collect {it.getName()}.join(' ')
 		)
 	}
 	from('resources') {
 		include 'log4j2.xml'
 	}
-	//duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-	//duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.named('test') {
