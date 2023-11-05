@@ -19,3 +19,23 @@ CREATE TABLE `horse`.`user_data` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 COMMENT = 'User current data';
+
+
+CREATE TABLE `scenario` (
+ `id` bigint NOT NULL AUTO_INCREMENT,  
+ `available_cash` decimal(38,2) DEFAULT NULL,
+  `invested_amount` decimal(38,2) DEFAULT NULL,
+   `updated_on` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (`id`)
+) engine=InnoDB COMMENT = 'List of scenarios';
+
+CREATE TABLE `scenario` (
+ `id` bigint NOT NULL AUTO_INCREMENT,  
+ `available_cash` decimal(38,2) DEFAULT NULL,
+  `invested_amount` decimal(38,2) DEFAULT NULL,
+  `updated_on` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='A list of user scenarios';
+
+
+    

@@ -42,6 +42,22 @@ http://localhost:8586/api/positions
 User Current positions with average price
 http://localhost:8586/api/user-current-positions
 
+All scenarios
+http://localhost:8586/api/allscenarios
+http://localhost:8586/api/scenario/1
+
+Delete Scenario
+http://localhost:8586/api/delete-scenario/1
+
+http://localhost:8586/api/add-scenario POST
+con.setRequestProperty("Content-Type", "application/json; charset=utf8")
+{
+    "investedAmount": 255068.20,
+    "availableCash": 557.32,
+    "updatedOn": "2023-11-01T19:17:44",
+    "id": 1
+}
+
 ##Usefull Links
 ```
 https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#publishing-your-application

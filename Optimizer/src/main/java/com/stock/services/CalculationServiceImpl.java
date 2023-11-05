@@ -46,8 +46,9 @@ public class CalculationServiceImpl implements CalculationService {
     super();
   }
 
+  /** TODO: Not in use*/
   public List<OutputDesicionData> processData2() {
-    List<OutputDesicionData> desicionData = new ArrayList<>();
+ //   List<OutputDesicionData> posionData = new ArrayList<>();
     return null;
   }
 
@@ -266,8 +267,7 @@ public class CalculationServiceImpl implements CalculationService {
     desicionData.setProfit(pl);
     desicionData.setInvestedAmount(investedAmount);
     desicionData.setQuaterlyDividendAmount(totalDividends);
-    desicionData.setDesicionData(outputDesicionData);
-
+    desicionData.setPositionData(outputDesicionData);
 
     return desicionData;
   }
@@ -286,7 +286,7 @@ public class CalculationServiceImpl implements CalculationService {
   }
 
   /**
-   * Geting a list of Watch symbols with quoterly dividends, yiled ranges and converting them into
+   * Getting a list of Watch symbols with quoterly dividends, yiled ranges and converting them into
    */
   @Override
   public List<String> getWatchSymbols() {
