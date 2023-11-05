@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+import com.stock.data.DesicionData;
 import com.stock.data.OutputDesicionData;
 import com.stock.data.UserPosition;
 import com.stock.model.Position;
@@ -30,6 +31,7 @@ import com.stock.yahoo.SymbolCurrentState;
 public class CalculationServiceImpl implements CalculationService {
 
   private static final Logger log = LogManager.getLogger(CalculationServiceImpl.class);
+  private static Logger dataLogger = LogManager.getLogger("data-log");
 
   @Autowired
   CurrentYahooData currentYahooData;
@@ -44,20 +46,22 @@ public class CalculationServiceImpl implements CalculationService {
     super();
   }
 
+  /** TODO: Not in use*/
   public List<OutputDesicionData> processData2() {
-    List<OutputDesicionData> desicionData = new ArrayList<>();
+ //   List<OutputDesicionData> posionData = new ArrayList<>();
     return null;
   }
-
 
   /**
    *
    * @return
    */
   @Override
-  public List<OutputDesicionData> processData() {
+  public DesicionData processData() {
 
-    List<OutputDesicionData> desicionData = new ArrayList<>();
+    DesicionData desicionData = new DesicionData();
+
+    List<OutputDesicionData> outputDesicionData = new ArrayList<>();
 
     Iterable<WatchSymbol> p = watchSymbolRepository.findAll();
     List<WatchSymbol> watchSymbols = Streamable.of(p).toList();
@@ -78,20 +82,25 @@ public class CalculationServiceImpl implements CalculationService {
     BigDecimal totalAssets = new BigDecimal(0);
     BigDecimal totalAccount = new BigDecimal(0);
     String action = "";
+    /* Result of comparing to zero for formatting */
     int res;
     int res2;
     int resHold;
     int resTotalAssets;
     int resDiv;
+    int resSymbolQuaterlyDividends;
+    int resSymbolProfit;
 
     System.out.println("\n" + new Utility().getDateTimeFormatter().format(LocalDateTime.now()));
 
-    System.out.println(
-        "=========================================================================================");
-    System.out.println(
-        "| Symbol  |Shares| Price  | Position,$| QDiv,$ | QDivAmt |UpperY| MidY | CYield | YDiff |");
-    System.out.println(
-        "=========================================================================================");
+    CalculationServiceImpl.dataLogger
+        .info(new Utility().getDateTimeFormatter().format(LocalDateTime.now()));
+    CalculationServiceImpl.dataLogger.info(
+        "======================================================================================================================");
+    CalculationServiceImpl.dataLogger.info(
+        "| Symbol  |Shares|Avg.Price| Price  |  P/L    | Position,$| QDiv,$ | QDivAmt | UpperY| MidY | CYield| YDiff  | Action ");
+    CalculationServiceImpl.dataLogger.info(
+        "======================================================================================================================");
 
     for (int i = 0; i < watchSymbols.size(); i++) {
 
@@ -113,12 +122,19 @@ public class CalculationServiceImpl implements CalculationService {
       BigDecimal middleOfYieldRange = new BigDecimal(0);
       BigDecimal yieldDiff = new BigDecimal(0);
       int numberOfShares = 0;
+      BigDecimal symbolAveragePrice = new BigDecimal(0);
+      BigDecimal symbolProfit = new BigDecimal(0);
 
       final Optional<UserPosition> cplR =
           userPositions.stream().filter(r -> r.getSymbol().equalsIgnoreCase(symbol)).findFirst();
 
       if (cplR != null && !cplR.isEmpty()) {
         numberOfShares = cplR.get().getNumberOfShares();
+        symbolAveragePrice = cplR.get().getAveragePrice();
+
+        symbolProfit = BigDecimal.valueOf(numberOfShares)
+            .multiply(symbolState.get().getPrice().subtract(symbolAveragePrice));
+
         totalAssets = BigDecimal.valueOf(numberOfShares).multiply(symbolState.get().getPrice());
         symbolQuaterlyDividends =
             BigDecimal.valueOf(numberOfShares).multiply(ws.get().getQuoterlyDividendAmount());
@@ -135,6 +151,10 @@ public class CalculationServiceImpl implements CalculationService {
       odd.setUpperYield(upperYield);
       odd.setLowerYield(lowerYield);
 
+      if (symbolState.get().getPrice() == null) {
+        continue;
+      }
+
       yield = ws.get().getQuoterlyDividendAmount().multiply(BigDecimal.valueOf(400))
           .divide(symbolState.get().getPrice(), RoundingMode.HALF_EVEN);
       middleOfYieldRange =
@@ -147,6 +167,7 @@ public class CalculationServiceImpl implements CalculationService {
       res = yield.compareTo(ws.get().getUpperYield());
       res2 = ws.get().getUpperYield().compareTo(BigDecimal.valueOf(0.0));
       resHold = yield.compareTo(middleOfYieldRange);
+      resSymbolProfit = symbolProfit.compareTo(BigDecimal.valueOf(0.0));
 
       if (res == 0 || res == 1 && res2 != 0) {
         action = "Buy";
@@ -167,12 +188,26 @@ public class CalculationServiceImpl implements CalculationService {
       odd.setAction(action);
 
       String strShares = (numberOfShares != 0) ? String.format("%3d", numberOfShares) : "   ";
+
+      resSymbolQuaterlyDividends = symbolQuaterlyDividends.compareTo(BigDecimal.valueOf(0.0));
+      String strSymbolAveragePrice =
+          (resSymbolQuaterlyDividends != 0) ? String.format("%6.2f", symbolAveragePrice) : "   ";
+
       resTotalAssets = totalAssets.compareTo(BigDecimal.valueOf(0.0));
       String strPosition = (resTotalAssets == 1) ? String.format("%,9.2f", totalAssets) : "   ";
 
       resDiv = symbolQuaterlyDividends.compareTo(BigDecimal.valueOf(0.0));
       String strSymbolQDiv =
           (resDiv == 1) ? String.format("%6.2f", symbolQuaterlyDividends) : "   ";
+
+      String strSymbolProfit =
+          (resSymbolProfit == 1) ? String.format("% 6.2f", symbolProfit) : "   ";
+
+      if (resSymbolProfit == -1) {
+        strSymbolProfit = String.format("% 6.2f", symbolProfit);
+      }
+
+
 
       // action = (numberOfShares == 0 && !action.equalsIgnoreCase("sell")) ? action :
       // " ";
@@ -184,29 +219,55 @@ public class CalculationServiceImpl implements CalculationService {
         action = "   ";
       }
 
-      System.out.printf(
-          "| %-7S | %4s | %6.2f | %9s | %6.2f | %7s | %5.2f | %4.2f | %5.2f | % 5.3f | %-12s %n",
-          symbol, strShares, symbolState.get().getPrice(), strPosition,
-          ws.get().getQuoterlyDividendAmount(), strSymbolQDiv, upperYield, middleOfYieldRange,
-          yield, yieldDiff, action);
+
+      String outputDecisionLine = String.format(
+          "| %-7S | %4s |  %6s | %6.2f | %7s | %9s | %6.2f | %7s | %5.2f | %4.2f | %5.2f | % 5.3f | %-12s",
+          symbol, strShares, strSymbolAveragePrice, symbolState.get().getPrice(), strSymbolProfit,
+          strPosition, ws.get().getQuoterlyDividendAmount(), strSymbolQDiv, upperYield,
+          middleOfYieldRange, yield, yieldDiff, action);
+
+      // System.out.println(outputDecisionLine);
+      CalculationServiceImpl.dataLogger.info(outputDecisionLine);
+      // CalculationServiceImpl.log.info(outputDecisionLine);
+
+      // System.out.printf(
+      // "| %-7S | %4s | %6s | %6.2f | %9s | %6.2f | %7s | %5.2f | %4.2f | %5.2f | % 5.3f | %-12s
+      // %n",
+      // symbol, strShares, strSymbolAveragePrice, symbolState.get().getPrice(), strPosition,
+      // ws.get().getQuoterlyDividendAmount(), strSymbolQDiv, upperYield, middleOfYieldRange,
+      // yield, yieldDiff, action);
       odd.setShares(numberOfShares);
+      odd.setSymbolAveragePrice(symbolAveragePrice);
       odd.setPrice(symbolState.get().getPrice());
       odd.setSymbolPosition(totalAssets);
       odd.setCurrentYield(yield);
       odd.setYieldDifference(yieldDiff);
       odd.setQuaterlyShareDividendAmount(ws.get().getQuoterlyDividendAmount());
+      odd.setPositionDividendAmount(symbolQuaterlyDividends);
 
-      desicionData.add(odd);
+      outputDesicionData.add(odd);
     }
     totalAccount = totalAccount.add(availableCash);
     BigDecimal pl = totalAccount.subtract(investedAmount);
-    System.out.println(
-        "=========================================================================================");
-    System.out.printf("  Quaterly Dividends,$ %,8.2f  Account Total,$: %,10.2f %n", totalDividends,
-        totalAccount);
-    System.out.printf("  Available Cash: $%,10.2f %n", availableCash);
-    System.out.printf("  Invested Amount: $%,10.2f    P/L: $%,10.2f  %n", investedAmount, pl);
+    CalculationServiceImpl.dataLogger.info(
+        "======================================================================================================================");
 
+    String strAccountSummary = String.format(
+        "  Quaterly Dividends,$ %,8.2f  Account Total,$: %,10.2f", totalDividends, totalAccount);
+    String strAvailableCash = String.format("  Available Cash: $%,10.2f", availableCash);
+    String strPL =
+        String.format("  Invested Amount: $%,10.2f    P/L: $%,10.2f", investedAmount, pl);
+
+    CalculationServiceImpl.dataLogger.info(strAccountSummary);
+    CalculationServiceImpl.dataLogger.info(strAvailableCash);
+    CalculationServiceImpl.dataLogger.info(strPL);
+
+    desicionData.setAccountTotal(totalAccount);
+    desicionData.setAvailableCash(availableCash);
+    desicionData.setProfit(pl);
+    desicionData.setInvestedAmount(investedAmount);
+    desicionData.setQuaterlyDividendAmount(totalDividends);
+    desicionData.setPositionData(outputDesicionData);
 
     return desicionData;
   }
@@ -225,7 +286,7 @@ public class CalculationServiceImpl implements CalculationService {
   }
 
   /**
-   * Geting a list of Watch symbols with quoterly dividends, yiled ranges and converting them into
+   * Getting a list of Watch symbols with quoterly dividends, yiled ranges and converting them into
    */
   @Override
   public List<String> getWatchSymbols() {

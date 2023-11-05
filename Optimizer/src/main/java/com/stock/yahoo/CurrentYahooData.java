@@ -38,6 +38,12 @@ public class CurrentYahooData {
     for (int y = 0; y < futureList.size(); y++) {
       Future<SymbolCurrentState> future = futureList.get(y);
       SymbolCurrentState p = future.get();
+
+      // skip adding a symbol if price is NOT fetched
+      if (p.getPrice() == null) {
+        continue;
+      }
+
       plainSymbolStatus.add(p);
       // BigDecimal outstandingShares = p.getMarketCap().divide(p.getPrice(),
       // MathContext.DECIMAL32);
